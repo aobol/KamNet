@@ -9,7 +9,7 @@
 import os
 TAIL = "_trial1"                                                                                     # The use-defined suffix of pickle list, used to distinguish different input pickle lists
 OUT_DIR = os.path.join("/projectnb2/snoplus/KLZ_NEWFINAL/machine_learning/", "KamLAND" + TAIL + "/") # Location to store the .pickle files
-OUT_PICKLE_DIR = "/projectnb/snoplus/KLZ_NEWFINAL/machine_learning_plist/"                                 # Location of the .dat pickle list
+OUT_PICKLE_DIR = "/projectnb/snoplus/KLZ_NEWFINAL/machine_learning_plist/"                           # Location of the .dat pickle list
 INPUT_DIR = "/projectnb/snoplus/KLZ_NEWFINAL/new_ml_data/data-root-KamNET/"                          # Location of the input .root   files
 MACRO_DIR = "/projectnb/snoplus/machine_learning/data/shell"                                         # A place to store all the generated shell scripts
 TIME = "0:5:00"                                                                                      # Processing time of each shell script

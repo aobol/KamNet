@@ -53,7 +53,7 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
         tree.GetEntry(evt_index)
         #FV/ROI cut
         try:
-            energy = tree.EnergyA2.   # These are the 
+            energy = tree.EnergyA2   # These are the 
             position = tree.r
             hit = tree.NhitID
             if (energy < ELOW) or (energy > EHI) or (position > FV_CUT_HI) or (position < FV_CUT_LOW):
@@ -62,16 +62,23 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
             print("error")
             continue
 
+        '''
+        Read out PMT hitlist, time and charge
+        '''
         if good_hit:
-            good_pmt_list = np.array(tree.hitlist_array_good)
-            good_pmt_time_list = np.array(tree.time_array_good) 
-            good_pmt_charge_list = np.array(tree.charge_array_good)
-            event = np.zeros((current_clock.clock_size(),ROWS,COLS))
+            good_pmt_list = np.array(tree.pmtlist_good)
+            good_pmt_time_list = np.array(tree.pmtt_good)
+            good_pmt_charge_list = np.array(tree.pmtq_good)
         else:
-            good_pmt_list = np.array(tree.hitlist_array)
-            good_pmt_time_list = np.array(tree.time_array)
-            good_pmt_charge_list = np.array(tree.charge_array)
-            event = np.zeros((current_clock.clock_size(),ROWS,COLS))
+            #gettting PMT information for a event
+            good_pmt_list = np.array(tree.pmtlist)
+            good_pmt_time_list = np.array(tree.pmtt)
+            good_pmt_charge_list = np.array(tree.pmtq)
+
+        '''
+        Read out only 17 inch PMTs (that is, PMT index < 1325)
+        '''
+        event = np.zeros((current_clock.clock_size(),ROWS,COLS))
 
         if only_17inch:
             good_index = good_pmt_list<1325
@@ -80,7 +87,7 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
             good_pmt_charge_list = good_pmt_charge_list[good_index]
 
         vertex = np.array([tree.x/100.0,tree.y/100.0,tree.z/100.0])
-        # Calculate time of flight
+        # Calculate time of flight. In KLZ simulation the TOF is already subtracted, so just set it to 0
         tof_array = []
         for pmtid in good_pmt_list:
             tof_array.append(0)
@@ -177,16 +184,18 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="/projectnb2/snoplus/KLZ_NEWFINAL/new_ml_data/data-root-KamNET/root-XeLS-0nu_Xe136run016532-000-000001.root")
+    parser.add_argument("--input", default="/projectnb2/snoplus/KLZ_NEW2/machine_learning/CDM/CDM_deltaM16.5_XeLS_8.root")
     parser.add_argument("--outputdir", default="/projectnb/snoplus/sphere_data/c10_2MeV")
-    parser.add_argument("--pmt_file_index", default="/project/snoplus/KamLAND-Zen/base-root-analysis/pmt_xyz.dat")
+    parser.add_argument("--pmt_file_index", default="/project/snoplus/ml2/data/pmt_xyz.dat")
     parser.add_argument("--pmt_file_size", default="/projectnb/snoplus/machine_learning/prototype/pmt.txt")
     parser.add_argument("--process_index", type=int, default=-1)
+    parser.add_argument("--elow", type=float, default=2.0)
+    parser.add_argument("--ehi", type=float, default=3.0)
     args = parser.parse_args()
 
     position = PMT_setup(args.pmt_file_index)
 
-    fmc = transcribe_hits(input=args.input, outputdir=args.outputdir, PMT_POSITION = position)
+    fmc = transcribe_hits(input=args.input, outputdir=args.outputdir, PMT_POSITION = position,elow=args.elow, ehi=args.ehi)
 
 
 
