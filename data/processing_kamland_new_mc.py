@@ -123,7 +123,7 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
         '''
         plt.figure(figsize=(15,15))
         spec = gridspec.GridSpec(ncols=4, nrows=2, height_ratios=[1,2])
-        plt.subPLOT_HITMAP(spec[1,:])
+        plt.subplot(spec[1,:])
         idx_pool = [5,11,14,18]
         plt.hist(tz,bins=np.arange(-20,40,1.5),density=True,color=colormap_normal(0.2))
         plt.axvline(x=-20,color="red",label="KamNet Window")
@@ -145,21 +145,21 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
             eventd['nhit'] = np.count_nonzero(evnt)
             numev += 1
             time_sequence = []
-            subPLOT_HITMAP_index = 0
+            subplot_index = 0
             for idx, maps in enumerate(evnt):
                 if PLOT_HITMAP and (idx in idx_pool):
-                        ax = plt.subPLOT_HITMAP(spec[0,subPLOT_HITMAP_index ])
+                        ax = plt.subplot(spec[0,subplot_index ])
                         begin,end = current_clock.get_range_from_tick(idx)
                         if begin == -9999:
                             plt.title("(Past, %.1f ns)"%(end),fontsize=FSIZE)
                         else:
                             plt.title("(%s ns, %.1f ns)"%(begin,end),fontsize=FSIZE)
-                        subPLOT_HITMAP_index += 1
+                        subplot_index += 1
                         ax.axes.get_xaxis().set_visible(False)
                         ax.axes.get_yaxis().set_visible(False)
-                        ax.imshow(maps,cmap=colormap_normal, norm=matPLOT_HITMAPlib.colors.LogNorm(vmin=0.3, vmax=10.0))
+                        ax.imshow(maps,cmap=colormap_normal, norm=matplotlib.colors.LogNorm(vmin=0.3, vmax=10.0))
                         # plt.colorbar()
-                        if subPLOT_HITMAP_index > 49:
+                        if subplot_index > 49:
                             break
                 time_sequence.append(sparse.csr_matrix(maps)) # Save each event as a CSR sparse matrix
             if PLOT_HITMAP:
