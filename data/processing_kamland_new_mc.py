@@ -23,13 +23,13 @@ import time
 from ROOT import TFile
 from datetime import datetime
 from tqdm import tqdm
-import matPLOT_HITMAPlib.gridspec as gridspec
+import matplotlib.gridspec as gridspec
 from clock import clock
 from tools import *
-import matPLOT_HITMAPlib
-matPLOT_HITMAPlib.use("Agg")
-import matPLOT_HITMAPlib.pyPLOT_HITMAP as plt
-from matPLOT_HITMAPlib import cm
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib import cm
 from settings import COLS, FV_CUT_LOW, FV_CUT_HI, good_hit, only_17inch, use_charge, ELOW, EHI, PLOT_HITMAP
 colormap_normal = cm.get_cmap("cool")
 FSIZE = 20
