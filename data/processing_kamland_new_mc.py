@@ -176,7 +176,6 @@ def transcribe_hits(input, outputdir, PMT_POSITION, elow, ehi):
 
 
 def main():
-    #python /projectnb/snoplus/machine_learning/prototype/processing_sparse.py --input /projectnb/snoplus/sphere_data/input/sph_out_C10_dVrndVtx_3p0mSphere_1k_16.root --outputdir /projectnb/snoplus/sphere_data/c10_2MeV/ --start 2 --end 3
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default="/projectnb2/snoplus/KLZ_NEWFINAL/new_ml_data/data-root-KamNET/root-XeLS-0nu_Xe136run016532-000-000001.root")
     parser.add_argument("--outputdir", default="/projectnb/snoplus/sphere_data/c10_2MeV")

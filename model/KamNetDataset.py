@@ -60,7 +60,7 @@ class DetectorDataset(Dataset):
         if "Nhit" in sparse_dict.keys():
             return np.array(sparse_dict["Nhit"], dtype=int).flatten()
         else:
-            sparsem = np.array(sparse_dict["event"], dtype=object)
+            sparsem = np.array(sparse_dict[self.json_name], dtype=object)
             sparse_nhit = []
             for i in tqdm(range(len(sparsem))):
                 sparse_nhit.append(np.sum([len(slice.nonzero()[0]) for slice in sparsem[i]]))
@@ -102,8 +102,8 @@ class DetectorDataset(Dataset):
         Perform Nhit matching between input signal and output background with bootstrap allowed
         Bootstrap: sample with replacement in each dataset
         '''
-        signal_images = np.array(signal_dict["event"], dtype=object)
-        background_images = np.array(background_dict["event"], dtype=object)
+        signal_images = np.array(signal_dict[self.json_name], dtype=object)
+        background_images = np.array(background_dict[self.json_name], dtype=object)
         nhit_range = np.arange(0,38**2,1)
         signal_nhit = np.array(self.get_sparse_nhit(signal_dict))
         bkg_nhit = np.array(self.get_sparse_nhit(background_dict))
